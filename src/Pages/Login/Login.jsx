@@ -1,11 +1,50 @@
-import React from 'react';
-
+import React, { useState } from "react";
+import { auth } from "../../firebase";
+import { signInWithEmailAndPassword, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup } from "firebase/auth";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate()
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+
+            toast.success("Logged in successfully!");
+            navigate('/')
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            toast.success("Google sign-in successful!");
+            navigate('/')
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const handleFacebookSignIn = async () => {
+        const provider = new FacebookAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            alert("Facebook sign-in successful!");
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+
     return (
-        <section className="bg-white mx-32">
+        <section className="bg-white lg:px-32 mx-6">
             <div className="grid grid-cols-1 lg:grid-cols-2">
                 <div className="flex items-center justify-center px-4 py-10 bg-white sm:px-6 lg:px-8 sm:py-16 lg:py-24">
-                    <div className="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
+                    <div className="xl:w-full md:max-w-md max-w-[400px] 2xl:max-w-md xl:mx-auto">
                         <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl">Sign in to Gadgets</h2>
                         <p className="mt-2 text-base text-gray-600">
                             Don’t have an account?{" "}
@@ -18,7 +57,7 @@ const Login = () => {
                             </a>
                         </p>
 
-                        <form action="#" method="POST" className="mt-8">
+                        <form onSubmit={handleLogin} className="mt-8">
                             <div className="space-y-5">
                                 <div>
                                     <label htmlFor="email" className="text-base font-medium text-gray-900">
@@ -30,6 +69,8 @@ const Login = () => {
                                             name="email"
                                             id="email"
                                             placeholder="Enter your email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
                                             className="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                                         />
                                     </div>
@@ -55,6 +96,8 @@ const Login = () => {
                                             name="password"
                                             id="password"
                                             placeholder="Enter your password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
                                             className="block w-full p-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
                                         />
                                     </div>
@@ -74,6 +117,7 @@ const Login = () => {
                         <div className="mt-3 space-y-3">
                             <button
                                 type="button"
+                                onClick={handleGoogleSignIn}
                                 className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
                             >
                                 <div className="absolute inset-y-0 left-0 p-4">
@@ -93,6 +137,7 @@ const Login = () => {
 
                             <button
                                 type="button"
+                                onClick={handleFacebookSignIn}
                                 className="relative inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-gray-700 transition-all duration-200 bg-white border-2 border-gray-200 rounded-md hover:bg-gray-100 focus:bg-gray-100 hover:text-black focus:text-black focus:outline-none"
                             >
                                 <div className="absolute inset-y-0 left-0 p-4">

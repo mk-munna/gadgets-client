@@ -2,15 +2,14 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyAvHRKfbKntTy9gjr8vN_recJPSWi5rClg",
+    authDomain: "gadgets-co.firebaseapp.com",
+    projectId: "gadgets-co",
+    storageBucket: "gadgets-co.appspot.com",
+    messagingSenderId: "414229414537",
+    appId: "1:414229414537:web:0f4d87a7b66e0467b2bc58"
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-
-export { auth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut };
+export const auth = getAuth(app);
+export const googleProvider = new GoogleAuthProvider();
